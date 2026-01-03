@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chào mừng đến với LOHU</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
+
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4; padding: 20px;">
+        <tr>
+            <td align="center">
+
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+
+                    <tr>
+                        <td style="padding: 30px 30px 10px 30px; text-align: center;">
+                            <h2 style="color: #5D4DCB; margin: 0; font-size: 24px;">LOHU xin chào!</h2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 0 30px 20px 30px; color: #333333; line-height: 1.6; font-size: 16px;">
+                            <p>Cảm ơn bạn đã chọn <b>LOHU</b> để đồng hành trên chặng đường học tập đầy gian nan phía trước!</p>
+                            <p>Để tiến hành đăng ký tài khoản, xin vui lòng nhấn vào nút bên dưới:</p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" style="padding: 10px 0 30px 0;">
+                            <a th:href="@{'http://localhost:6969/auth/verifyToken'(tokenId=${tokenId}, token=${token})}"
+                               style="background-color: #5D4DCB;
+                                          color: #ffffff;
+                                          padding: 12px 24px;
+                                          text-decoration: none;
+                                          border-radius: 5px;
+                                          font-weight: bold;
+                                          display: inline-block;
+                                          font-size: 16px;">
+                                Tạo tài khoản
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 0 30px 30px 30px; color: #888888; font-size: 14px; line-height: 1.5;">
+                            <p style="margin: 0;">Trân trọng,<br/>Đội ngũ hỗ trợ LOHU.</p>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Đăng ký tài khoản</h2>
+
+    <form th:action="@{/user/create}" method="post" th:object="${userCreationRequest}">
+        <div>
+            <lable th:for="name">Tên:</lable>
+            <input type="text" th:field="*{name}" placeholder="Nhập vào tên"/>
+            <span th:errors="*{name}"></span>
+        </div>
+        <div>
+            <lable th:for="gender">Giới tính:</lable>
+            <div>
+                <input type="radio" th:field="*{gender}" value="true"> Nam
+                <input type="radio" th:field="*{gender}" value="false"> Nữ
+            </div>
+            <span th:errors="*{gender}"></span>
+        </div>
+        <div>
+            <label th:for="dateOfBirth">Ngày sinh:</label>
+            <input type="date" th:field="*{dateOfBirth}"/>
+            <span th:errors="*{dateOfBirth}"></span>
+        </div>
+        <div>
+            <label th:for="phoneNumber">Số điện thoại:</label>
+            <input type="text" th:field="*{phoneNumber}" placeholder="Nhập vào số điện thoại"/>
+            <span th:errors="*{phoneNumber}"></span>
+        </div>
+        <div>
+            <label th:for="email">Email:</label>
+            <input type="text" th:field="*{email}" readonly="readonly"/>
+            <span th:errors="*{email}"></span>
+        </div>
+        <div>
+            <label th:for="address">Địa chỉ:</label>
+            <input type="text" th:field="*{address}" placeholder="Nhập địa chỉ"/>
+            <span th:errors="*{address}"></span>
+        </div>
+        <div>
+            <label th:for="username">Tên đăng nhập:</label>
+            <input type="text" th:field="*{username}" placeholder="Nhập tên đăng nhập"/>
+            <span th:errors="*{username}"></span>
+        </div>
+        <div>
+            <label th:for="password">Mật khẩu:</label>
+            <input type="password" th:field="*{password}" placeholder="Nhập mật khẩu"/>
+            <span th:if="${message}" th:text="${message}"></span>
+            <br th:if="${message}"/>
+            <span th:errors="*{password}"></span>
+        </div>
+        <div>
+            <label th:for="confirmPassword">Xác nhận mật khẩu:</label>
+            <input type="password" th:field="*{confirmPassword}" placeholder="Nhập mật khẩu xác nhận"/>
+            <span th:if="${message}" th:text="${message}"></span>
+            <br th:if="${message}"/>
+            <span th:errors="*{confirmPassword}"></span>
+        </div>
+        <div>
+            <button type="submit">Đăng ký</button>
+        </div>
+    </form>
+</body>
+</html>
