@@ -33,9 +33,9 @@ public class LearningFolder {
     @Column(name = "IsPublic", nullable = false)
     Boolean isPublic;
 
-    @ManyToOne
-    @JoinColumn(name = "MilestoneId")
-    Milestone milestone;
+//    @ManyToOne
+//    @JoinColumn(name = "MilestoneId")
+//    Milestone milestone;
 
     @ManyToOne
     @JoinColumn(name = "UserId")

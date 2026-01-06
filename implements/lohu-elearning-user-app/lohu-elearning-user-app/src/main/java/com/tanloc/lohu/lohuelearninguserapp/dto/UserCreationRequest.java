@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class UserCreationRequest {
-    @NotBlank(message = "Tên không được để trống")
+    @NotBlank(message = "Tên không được để trống hay chỉ chứa toàn ký tự trắng")
     @Pattern(
-            regexp = "^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$",
+            regexp = "^(\\p{Lu}\\p{Ll}+)(\\s\\p{Lu}\\p{Ll}+)*$",
             message = "Mỗi từ phải bắt đầu hoa, chỉ chữ cái, không số/ký tự đặc biệt, không thừa khoảng trắng"
     )
     String name;

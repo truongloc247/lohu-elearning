@@ -50,7 +50,7 @@ public class UserController {
             model.addAttribute("message", e.getMessage());
             return "user-creation-form";
         }
-        redirectAttributes.addFlashAttribute("message", "Tạo tài khoản thành công!");
+        redirectAttributes.addFlashAttribute("message", "Đăng ký tài khoản thành công!");
         return "redirect:/login";
     }
 }

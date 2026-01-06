@@ -33,8 +33,8 @@ public class Milestone {
     @JoinColumn(name = "LearningRoadmapId")
     LearningRoadmap learningRoadmap;
 
-    @OneToMany(mappedBy = "milestone", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<LearningFolder> learningFolders;
+//    @OneToMany(mappedBy = "milestone", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    List<LearningFolder> learningFolders;
 
     @OneToMany(mappedBy = "milestone", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<FlashCardSet> flashCardSets;

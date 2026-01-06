@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/card.css}">
+    <title>Danh sách bộ Flashcard</title>
+</head>
+<body>
+    <div class="d-flex">
+        <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+        <div class="container">
+            <div>
+                <form>
+                    <input type="text" name="searchKey" placeholder="Nhập tên bộ Flash card cần tìm" th:value="${searchKey}">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-sm-6 mb-3 mb-sm-0" th:each="flashCardSet : ${flashCardSets}" th:object="${flashCardSet}">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="card-title" th:text="*{name}"></h5>
+                                    <div class="d-flex gap-2">
+                                        <span th:if="*{learningFolder}" th:text="*{learningFolder.name}"></span>
+                                        <span th:if="*{milestone}" th:text="*{milestone.name}"></span>
+                                        <span th:text="*{isPublic} ? 'Công khai' : 'Riêng tư'"></span>
+                                        <span th:text="*{modifiedDate}"></span>
+                                    </div>
+                                </div>
+                                <p class="card-text" th:text="*{description}"></p>
+                                <a href="#" class="btn btn-primary">Bắt đầu học</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${totalPages < 1}">Không có bộ Flash card nào!</div>
+
+            </div>
+            <div th:if="${totalPages > 0}">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="'page-item' + ${currentPage == i ? ' active' : ''}">
+                            <a class="page-link" th:href="@{'/user/library/flashCardSets?pageNumber=' + ${i} + ${searchKey != null ? '&searchKey=' + searchKey : ''}}" th:text="${i}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/sidebar.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

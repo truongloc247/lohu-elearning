@@ -8,11 +8,11 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 d-flex flex-column align-items-center">
+            <div class="col-md-7 d-flex flex-column align-items-center">
                 <h1>LOHU</h1>
                 <p>Học tập dễ hơn bao giờ hết</p>
             </div>
-            <div class="col-md-6 d-flex flex-column gap-4">
+            <div class="col-md-5 d-flex flex-column gap-4 ">
                 <h2 class="text-center">Xác thực Email</h2>
 
                 <form class="d-flex flex-column gap-2" th:action="@{/auth/sendEmail}" method="post" th:object="${emailVerificationRequest}">

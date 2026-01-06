@@ -1,0 +1,81 @@
+/* --- Cấu hình màu chủ đạo --- */
+:root {
+    --brand-color: #5D4DCB;
+    --brand-color-hover: #4a3da1;
+    --brand-bg-light: #efeffd;
+}
+
+/* 1. Trang trí khung Card */
+.card {
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* 2. Hiệu ứng Hover cho Card */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(93, 77, 203, 0.15);
+    border-color: var(--brand-color);
+}
+
+/* 3. Tiêu đề */
+.card-title {
+    color: var(--brand-color);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* 4. Các thẻ thông tin (Tags) */
+.card-body .d-flex.gap-2 span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background-color: var(--brand-bg-light);
+    color: var(--brand-color);
+    display: inline-block;
+}
+
+/* Riêng ngày tháng thì style nhạt hơn */
+.card-body .d-flex.gap-2 span:last-child {
+    background-color: transparent;
+    color: #999;
+    padding: 6px 0;
+}
+
+/* 5. Mô tả */
+.card-text {
+    color: #555;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 6. Nút Bắt đầu học (Đã chỉnh nhỏ lại) */
+.card .btn-primary {
+    background-color: var(--brand-color);
+    border-color: var(--brand-color);
+    font-weight: 600;
+
+    /* Chỉnh kích thước nút tại đây */
+    width: auto;            /* Để nút tự co theo chữ, không full width */
+    padding: 6px 20px;      /* Kích thước vừa phải */
+    font-size: 0.9rem;      /* Chữ nhỏ gọn một chút */
+
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.card .btn-primary:hover {
+    background-color: var(--brand-color-hover);
+    border-color: var(--brand-color-hover);
+    box-shadow: 0 4px 8px rgba(93, 77, 203, 0.25);
+    transform: translateY(-1px); /* Nảy nhẹ khi hover nút */
+}
