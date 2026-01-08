@@ -2,7 +2,6 @@ package com.tanloc.lohu.lohuelearninguserapp.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +11,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @Builder
-public class LearningFolderCreationRequest {
+public class FlashCardSetEditRequest {
+    @NotNull
+    Long id;
+
     @NotBlank(message = "Tên thư mục không được để trống hay chỉ chứa toàn ký tự trắng")
     String name;
 

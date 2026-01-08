@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật thư mục học tập</title>
+</head>
+<body>
+    <div class="d-flex">
+        <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+        <div class="container">
+            <form th:action="@{/user/flashCardSet/doEdit}" th:method="post" th:object="${flashCardSetEditRequest}">
+                <div>
+                    <label>Mã thư mục:</label>
+                    <input th:field="*{id}" type="text" class="form-control" readonly="readonly">
+                </div>
+                <div>
+                    <label th:for="name">Tên thư mục:</label>
+                    <input th:field="*{name}" type="text">
+                    <span th:errors="*{name}"></span>
+                </div>
+                <div>
+                    <label th:for="description">Mô tả:</label>
+                    <input th:field="*{description}" type="text">
+                    <span th:errors="*{description}"></span>
+                </div>
+                <div>
+                    <label th:for="isPublic">Công khai:</label>
+                    <select th:field="*{isPublic}">
+                        <option value="false">Riêng tư</option>
+                        <option value="true">Công khai</option>
+                    </select>
+                    <span th:errors="*{isPublic}"></span>
+                </div>
+                <button type="submit">Xác nhận</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

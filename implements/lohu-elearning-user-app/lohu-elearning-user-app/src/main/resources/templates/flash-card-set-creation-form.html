@@ -8,7 +8,7 @@
   <div class="d-flex">
     <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
     <div class="container">
-      <form th:action="@{/user/library/learningFolder/doCreate}" th:method="post" th:object="${learningFolderCreationRequest}">
+      <form th:action="@{/user/flashCardSet/doCreate}" th:method="post" th:object="${flashCardSetCreationRequest}">
         <div>
           <label th:for="name">Tên thư mục:</label>
           <input th:field="*{name}" type="text">

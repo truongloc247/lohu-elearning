@@ -34,17 +34,10 @@ public class FlashCardSet {
     Boolean isPublic;
 
     @ManyToOne
-    @JoinColumn(name = "LearningFolderId")
-    LearningFolder learningFolder;
-
-    @ManyToOne
-    @JoinColumn(name = "MilestoneId")
-    Milestone milestone;
-
-    @ManyToOne
     @JoinColumn(name = "UserId")
     User user;
 
     @OneToMany(mappedBy = "flashCardSet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<FlashCard> flashCards;
+
 }
