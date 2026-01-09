@@ -109,7 +109,7 @@ public class FlashCardService {
         flashCardRepository.delete(flashCard);
     }
 
-    @PreAuthorize("hasRole('USER') and authentication.principal.user.id == #userId")
+    @PreAuthorize("hasRole('PREMIUM') and authentication.principal.user.id == #userId")
     public boolean generateFlashCardUsingAI(Long userId, Long flashCardSetId, FlashCardGeneratedByAiRequest flashCardGeneratedByAiRequest) {
         FlashCardSet flashCardSet = flashCardSetRepository.findByIdAndUserId(flashCardSetId, userId).orElseThrow(
                 () -> new FlashCardSetNotFoundException("Không tìm thấy bộ flash card có mã " + flashCardSetId + " của user " + userId)

@@ -17,16 +17,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("user/library/learningFolder/**", "/user/flashCardSet/**").hasAnyRole("USER", "PREMIUM")
+                    .requestMatchers("user/flashCardSet/*/flashCard/doGenerate", "user/flashCardSet/*/flashCard/AIgenerate").hasRole("PREMIUM")
+                    .requestMatchers("user/library/learningFolder/**", "/user/flashCardSet/**", "user/premium/**").hasAnyRole("USER", "PREMIUM")
                     .anyRequest().permitAll()
             )
             .formLogin( form -> form
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/user/flashCardSet/all")
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
+            )
+            .exceptionHandling(exception -> exception
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.sendRedirect("/user/premium/about");
+                })
             )
             .csrf(csrf -> csrf.disable());
 

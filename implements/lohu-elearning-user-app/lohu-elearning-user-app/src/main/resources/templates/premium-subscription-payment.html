@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <title>Đăng ký PREMIUM</title>
+</head>
+<body>
+<div class="d-flex">
+
+    <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+    <div>
+        <img th:src="'https://img.vietqr.io/image/vietinbank-99999999991-print.jpg?amount=' + ${@environment.getProperty('lohu.premium.price')} + '&addInfo=KICH%20HOAT%20PREMIUM&accountName=LOHU'">
+    </div>
+    <div>
+        <div>Xin vui lòng chuyển khoản thanh toán kích hoạt/gia hạn tài khoản PREMIUM</div>
+        <div>Chúng tôi sẽ tiến hành xác nhận và kích hoạt tài khoản của bạn. Xin cảm ơn!</div>
+        <a th:href="@{/user/flashCardSet/all}">Quay về trang chủ</a>
+    </div>
+
+</div>
+
+<script th:src="@{/js/sidebar.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
