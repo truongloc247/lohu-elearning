@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate flash card bởi AI</title>
+</head>
+<body>
+    <div class="d-flex">
+        <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+        <div class="container">
+            <form enctype="multipart/form-data" th:action="@{/user/flashCardSet/{flashCardSetId}/flashCard/doGenerate(flashCardSetId=${flashCardSetId})}" th:method="post" th:object="${flashCardGeneratedByAiRequest}">
+                <div>
+                    <label th:for="message">Nội dung bạn muốn tạo:</label>
+                    <input th:field="*{message}" type="text">
+                    <span th:errors="*{message}"></span>
+                </div>
+                <div>
+                    <label th:for="image">Ảnh đính kèm:</label>
+                    <input th:field="*{image}" type="file" accept="image/*">
+                    <span th:errors="*{image}"></span>
+                </div>
+                <button type="submit">Xác nhận</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

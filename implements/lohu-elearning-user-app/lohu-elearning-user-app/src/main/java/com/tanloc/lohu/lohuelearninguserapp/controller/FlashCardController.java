@@ -2,6 +2,7 @@ package com.tanloc.lohu.lohuelearninguserapp.controller;
 
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardCreationRequest;
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardEditRequest;
+import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardGeneratedByAiRequest;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCard;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCardSet;
 import com.tanloc.lohu.lohuelearninguserapp.exception.FlashCardNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -117,6 +119,30 @@ public class FlashCardController {
 
         flashCardService.delete(flashCardId, customUserDetails.getUser().getId());
         redirectAttributes.addFlashAttribute("message", "Đã xóa thành công");
+        return "redirect:/user/flashCardSet/" + flashCardSetId;
+    }
+
+
+    @GetMapping("/{flashCardSetId}/flashCard/AIgenerate")
+    public String showFlashCardGeneratedByAIForm(@PathVariable("flashCardSetId") Long flashCardSetId, Model model) {
+        model.addAttribute("flashCardSetId", flashCardSetId);
+        model.addAttribute("flashCardGeneratedByAiRequest", new FlashCardGeneratedByAiRequest());
+        return "flash-card-generated-by-ai";
+    }
+
+    @PostMapping("/{flashCardSetId}/flashCard/doGenerate")
+    public String showFlashCardGeneratedByAIForm(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("flashCardSetId") Long flashCardSetId, @Valid @ModelAttribute("flashCardGeneratedByAiRequest") FlashCardGeneratedByAiRequest flashCardGeneratedByAiRequest, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("flashCardSetId", flashCardSetId);
+            return "flash-card-generated-by-ai";
+        }
+        boolean isSuccessful = flashCardService.generateFlashCardUsingAI(customUserDetails.getUser().getId(), flashCardSetId, flashCardGeneratedByAiRequest);
+        if (isSuccessful) {
+            redirectAttributes.addFlashAttribute("message", "Đã tạo tự động flash card thành công");
+        }
+        else {
+            redirectAttributes.addFlashAttribute("message", "Tạo tự động không thành công");
+        }
         return "redirect:/user/flashCardSet/" + flashCardSetId;
     }
 }

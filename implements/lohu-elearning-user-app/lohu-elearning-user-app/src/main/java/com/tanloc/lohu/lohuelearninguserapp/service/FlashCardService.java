@@ -2,12 +2,14 @@ package com.tanloc.lohu.lohuelearninguserapp.service;
 
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardCreationRequest;
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardEditRequest;
+import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardGeneratedByAiRequest;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCard;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCardSet;
 import com.tanloc.lohu.lohuelearninguserapp.entity.User;
 import com.tanloc.lohu.lohuelearninguserapp.exception.FlashCardNotFoundException;
 import com.tanloc.lohu.lohuelearninguserapp.exception.FlashCardSetNotFoundException;
 import com.tanloc.lohu.lohuelearninguserapp.exception.ImageUploadException;
+import com.tanloc.lohu.lohuelearninguserapp.infrastructure.AIFlashCardDataGenerator;
 import com.tanloc.lohu.lohuelearninguserapp.infrastructure.FileUploader;
 import com.tanloc.lohu.lohuelearninguserapp.mapper.FlashCardMapper;
 import com.tanloc.lohu.lohuelearninguserapp.repository.FlashCardRepository;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -34,6 +37,7 @@ public class FlashCardService {
     FlashCardSetRepository flashCardSetRepository;
     FileUploader fileUploader;
     FlashCardMapper flashCardMapper;
+    AIFlashCardDataGenerator aiFlashCardDataGenerator;
 
     @PreAuthorize("authentication.principal.user.id == #userId")
     public Page<FlashCard> getByUserIdAndFlashCardSetId(Long userId, Long flashCardSetId, int pageNumber, int pageSize, String sortBy) {
@@ -103,5 +107,21 @@ public class FlashCardService {
                 .orElseThrow(() -> new FlashCardNotFoundException("Không tồn tại flash card có mã là " + id + " của user " + userId));
 
         flashCardRepository.delete(flashCard);
+    }
+
+    @PreAuthorize("hasRole('USER') and authentication.principal.user.id == #userId")
+    public boolean generateFlashCardUsingAI(Long userId, Long flashCardSetId, FlashCardGeneratedByAiRequest flashCardGeneratedByAiRequest) {
+        FlashCardSet flashCardSet = flashCardSetRepository.findByIdAndUserId(flashCardSetId, userId).orElseThrow(
+                () -> new FlashCardSetNotFoundException("Không tìm thấy bộ flash card có mã " + flashCardSetId + " của user " + userId)
+        );
+        List<FlashCard> flashCards = aiFlashCardDataGenerator.generateFlashCardData(flashCardGeneratedByAiRequest.getMessage(), flashCardGeneratedByAiRequest.getImage());
+        if (flashCards.size() == 0) return false;
+        for (FlashCard flashCard : flashCards) {
+            flashCard.setFlashCardSet(flashCardSet);
+            flashCardSet.getFlashCards().add(flashCard);
+        }
+
+        flashCardSetRepository.save(flashCardSet);
+        return true;
     }
 }
