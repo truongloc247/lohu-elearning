@@ -2,83 +2,195 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <title>Danh sách Flashcard</title>
+
+    <style>
+        :root {
+            --brand-purple: #6f42c1;
+            --brand-purple-hover: #59359a;
+            --brand-purple-rgb: 111, 66, 193;
+        }
+
+        body { background-color: #f8f9fa; }
+
+        .text-purple { color: var(--brand-purple) !important; }
+        .btn-purple { background-color: var(--brand-purple); color: white; border: none; }
+        .btn-purple:hover { background-color: var(--brand-purple-hover); color: white; }
+
+        .btn-outline-purple {
+            color: var(--brand-purple);
+            border-color: var(--brand-purple);
+        }
+        .btn-outline-purple:hover {
+            background-color: var(--brand-purple);
+            color: white;
+        }
+
+        .page-item.active .page-link { background-color: var(--brand-purple); border-color: var(--brand-purple); }
+        .page-link { color: var(--brand-purple); }
+
+        .form-control:focus {
+            border-color: var(--brand-purple);
+            box-shadow: 0 0 0 0.25rem rgba(var(--brand-purple-rgb), 0.25);
+        }
+
+        /* Style cho badge tím nhạt */
+        .badge-subtle-purple {
+            background-color: rgba(var(--brand-purple-rgb), 0.1) !important;
+            color: var(--brand-purple) !important;
+            border: 1px solid rgba(var(--brand-purple-rgb), 0.2);
+        }
+
+        @media (min-width: 768px) {
+            .border-md-end { border-right: 1px solid #dee2e6 !important; }
+            .border-md-start { border-left: 1px solid #dee2e6 !important; }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+
+        .img-cover-full {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 140px;
+        }
+    </style>
 </head>
 <body>
-    <div class="d-flex">
-        <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
-        <div class="container">
-            <div th:object="${flashCardSet}">
-                <h2 th:text="*{name}"></h2>
-                <div>
-                    <div th:text="*{isPublic} ? 'Riêng tư' : 'Công khai'"></div>
-                    <div th:text="*{modifiedDate}"></div>
-                </div>
-                <div th:text="*{description}"></div>
-            </div>
-            <div class="d-flex justify-content-between">
-                <a class="btn btn-primary" th:href="@{/user/flashCardSet/{id}/flashCard/create(id=${flashCardSet.id})}">Thêm mới</a>
-                <form class="d-flex gap-2" th:action="@{/user/flashCardSet/{id}(id=${flashCardSet.id})}">
-                    <input type="text" class="form-control" name="searchKey" placeholder="Nhập thuật ngữ hoặc định nghĩa" th:value="${searchKey}">
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </form>
-            </div>
-            <div>
-                <div th:each="flashCard : ${flashCards}" th:object="${flashCard}">
-                    <div>
-                        <img th:if="flashCard.images" th:src="@{${flashCard.image}}">
-                        <img th:if="flashCard == null" src="#">
-                    </div>
-                    <div>
+<div class="d-flex min-vh-100">
+    <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+
+    <div class="flex-grow-1 p-4">
+        <div class="container-fluid" style="max-width: 1100px;">
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4" th:object="${flashCardSet}">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
-                            <div>Thuật ngữ</div>
-                            <div th:text="*{term}"></div>
+                            <h2 class="fw-bold text-purple mb-1" th:text="*{name}"></h2>
+                            <p class="text-muted mb-2" th:text="*{description}"></p>
                         </div>
-                        <div>
-                            <div>Định nghĩa</div>
-                            <div th:text="*{definition}"></div>
-                        </div>
+                        <span class="badge rounded-pill px-3 py-2 badge-subtle-purple"
+                              th:text="*{isPublic} ? 'Riêng tư' : 'Công khai'">
+                            </span>
                     </div>
-                    <div>
-                        <a th:href="@{'/user/flashCardSet/' + ${flashCardSet.id} + '/flashCard/edit/' + *{id}}">Chỉnh sửa</a>
-                        <a >Xóa</a>
+                    <div class="text-secondary small d-flex align-items-center gap-2">
+                        <i class="bi bi-clock-history"></i>
+                        <span>Cập nhật: </span>
+                        <span th:text="*{modifiedDate}"></span>
                     </div>
                 </div>
-                <div th:if="${totalPages < 1}">Không có flash card nào!</div>
             </div>
-            <div th:if="${totalPages > 0}">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li th:each="i : ${#numbers.sequence(1, totalPages)}" th:class="'page-item' + ${currentPage == i ? ' active' : ''}">
-                            <a class="page-link" th:href="@{'/user/flashCardSet/' + ${flashCardSet.id} + '?pageNumber=' + ${i} + ${searchKey != null ? '&searchKey=' + searchKey : ''}}" th:text="${i}"></a>
+
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <div class="col-auto">
+                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
+                       th:href="@{/user/flashCardSet/all}">
+                        <i class="bi bi-backspace"></i> Quay lại
+                    </a>
+                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
+                       th:href="@{/user/flashCardSet/{id}/flashCard/create(id=${flashCardSet.id})}">
+                        <i class="bi bi-plus-lg me-1"></i> Thêm thẻ mới
+                    </a>
+                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
+                       th:href="@{/user/flashCardSet/play/{id}(id=${flashCardSet.id})}">
+                        <i class="bi bi-play-circle"></i> Học ngay
+                    </a>
+                </div>
+                <div class="col-12 col-md-5">
+                    <form class="input-group shadow-sm" th:action="@{/user/flashCardSet/{id}(id=${flashCardSet.id})}">
+                        <input type="text" class="form-control border-end-0" name="searchKey"
+                               placeholder="Tìm kiếm..." th:value="${searchKey}">
+                        <button type="submit" class="btn bg-white border border-start-0 text-purple">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                <div class="card shadow-sm border-0 card-hover overflow-hidden"
+                     th:each="flashCard : ${flashCards}" th:object="${flashCard}">
+                    <div class="row g-0 align-items-stretch h-100">
+
+                        <div class="col-md-2 d-flex p-0">
+                            <img th:if="${flashCard.image}" th:src="@{${flashCard.image}}"
+                                 class="img-cover-full" alt="Img">
+                            <div th:if="${flashCard.image == null}" class="bg-light w-100 h-100 d-flex align-items-center justify-content-center" style="min-height: 140px;">
+                                <img th:src="@{/default-images/flash_card_default_img.png}"
+                                     class="opacity-50" style="width: 50px;" alt="Default">
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="row h-100 g-0">
+                                <div class="col-md-6 p-3 border-md-end d-flex flex-column">
+                                    <small class="text-uppercase text-purple fw-bold mb-2" style="font-size: 0.7rem;">Thuật ngữ</small>
+                                    <p class="text-dark mb-0 text-break" th:text="*{term}"></p>
+                                </div>
+
+                                <div class="col-md-6 p-3 d-flex flex-column">
+                                    <small class="text-uppercase text-purple fw-bold mb-2" style="font-size: 0.7rem;">Định nghĩa</small>
+                                    <p class="text-dark mb-0 text-break" th:text="*{definition}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-auto bg-light bg-opacity-10 border-md-start d-flex flex-column justify-content-center p-3 gap-2" style="min-width: 120px;">
+                            <a th:href="@{'/user/flashCardSet/' + ${flashCardSet.id} + '/flashCard/edit/' + *{id}}"
+                               class="btn btn-sm btn-outline-purple w-100 d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-pencil-square"></i> Sửa
+                            </a>
+                            <a th:href="@{'/user/flashCardSet/' + ${flashCardSet.id} + '/flashCard/delete/' + *{id}}"
+                               class="btn btn-sm btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+                               onclick="return confirm('Bạn xóa thẻ này chứ?');">
+                                <i class="bi bi-trash"></i> Xóa
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div th:if="${totalPages < 1}" class="text-center py-5">
+                    <p class="text-muted">Chưa có dữ liệu.</p>
+                </div>
+            </div>
+
+            <div th:if="${totalPages > 0}" class="mt-4">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                            th:class="'page-item' + ${currentPage == i ? ' active' : ''}">
+                            <a class="page-link shadow-none"
+                               th:href="@{'/user/flashCardSet/' + ${flashCardSet.id} + '?pageNumber=' + ${i} + ${searchKey != null ? '&searchKey=' + searchKey : ''}}"
+                               th:text="${i}"></a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
+</div>
 
-    <script th:if="${message}" th:inline="javascript">
-        Toastify({
-            text: [[${message}]],
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "#198754",
-                zIndex: 9999,
-                boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
-            }
-        }).showToast();
-    </script>
-
-    <script th:src="@{/js/sidebar.js}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:if="${message}" th:inline="javascript">
+    Toastify({
+        text: [[${message}]],
+        duration: 3000,
+        gravity: "top", position: "right", stopOnFocus: true,
+        style: { background: "#198754" }
+    }).showToast();
+</script>
+<script th:src="@{/js/sidebar.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

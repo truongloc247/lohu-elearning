@@ -4,6 +4,7 @@ import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardSetCreationRequest;
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardSetEditRequest;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCardSet;
 import com.tanloc.lohu.lohuelearninguserapp.entity.User;
+import com.tanloc.lohu.lohuelearninguserapp.exception.FlashCardNotFoundException;
 import com.tanloc.lohu.lohuelearninguserapp.exception.FlashCardSetNotFoundException;
 import com.tanloc.lohu.lohuelearninguserapp.exception.UserNotFoundException;
 import com.tanloc.lohu.lohuelearninguserapp.mapper.FlashCardSetMapper;
@@ -16,9 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -70,4 +74,10 @@ public class FlashCardSetService {
         return flashCardSetRepository.deleteByIdAndUserId(id, user.getId());
     }
 
+    @PostAuthorize("authentication.principal.user.id == returnObject.user.id or returnObject.isPublic")
+    public FlashCardSet getFlashCardForPlay(Long id) {
+        FlashCardSet flashCardSet = flashCardSetRepository.findById(id).orElseThrow(() -> new FlashCardSetNotFoundException("Không tồn tại bộ flash card có mã " + id));
+        Collections.shuffle(flashCardSet.getFlashCards());
+        return flashCardSet;
+    }
 }

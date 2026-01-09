@@ -107,4 +107,16 @@ public class FlashCardController {
             return "flash-card-edit-form";
         }
     }
+
+    @GetMapping("/{flashCardSetId}/flashCard/delete/{flashCardId}")
+    public String delete(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable("flashCardId") Long flashCardId, @PathVariable("flashCardSetId") Long flashCardSetId, RedirectAttributes redirectAttributes) {
+        FlashCard flashCard = flashCardService.getByIdAndUserId(flashCardId, customUserDetails.getUser().getId());
+        if (flashCard.getFlashCardSet().getId() != flashCardSetId) {
+            throw new FlashCardNotFoundException("Không tồn tại flash card có mã là " + flashCardId + " thuộc bộ flash card " + flashCardSetId);
+        }
+
+        flashCardService.delete(flashCardId, customUserDetails.getUser().getId());
+        redirectAttributes.addFlashAttribute("message", "Đã xóa thành công");
+        return "redirect:/user/flashCardSet/" + flashCardSetId;
+    }
 }

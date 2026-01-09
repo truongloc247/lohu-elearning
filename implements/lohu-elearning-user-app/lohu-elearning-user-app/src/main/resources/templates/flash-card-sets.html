@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-text" th:text="*{description}"></div>
                         <div class="d-flex gap-2 mb-2 mt-auto">
-                            <a href="#" class="btn btn-primary flex-fill">Bắt đầu học</a>
+                            <a th:href="@{/user/flashCardSet/play/{id}(id=*{id})}" class="btn btn-primary flex-fill">Bắt đầu học</a>
                             <div class="dropdown">
                                 <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots"></i>

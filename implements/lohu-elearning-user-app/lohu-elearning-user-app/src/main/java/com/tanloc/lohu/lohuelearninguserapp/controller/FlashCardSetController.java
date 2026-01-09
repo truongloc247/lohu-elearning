@@ -4,6 +4,7 @@ import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardSetCreationRequest;
 import com.tanloc.lohu.lohuelearninguserapp.dto.FlashCardSetEditRequest;
 import com.tanloc.lohu.lohuelearninguserapp.entity.FlashCardSet;
 import com.tanloc.lohu.lohuelearninguserapp.security.CustomUserDetails;
+import com.tanloc.lohu.lohuelearninguserapp.service.FlashCardService;
 import com.tanloc.lohu.lohuelearninguserapp.service.FlashCardSetService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -17,11 +18,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
+
 
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-@RequestMapping("user/flashCardSet")
+@RequestMapping("/user/flashCardSet")
 public class FlashCardSetController {
     FlashCardSetService flashCardSetService;
 
@@ -89,5 +92,12 @@ public class FlashCardSetController {
             redirectAttributes.addFlashAttribute("message", "Xóa không thành công");
         }
         return "redirect:/user/flashCardSet/all";
+    }
+
+    @GetMapping("/play/{id}")
+    public String playFlashCardSet(@PathVariable("id") Long id, Model model) {
+        FlashCardSet flashCardSet = flashCardSetService.getFlashCardForPlay(id);
+        model.addAttribute("flashCardSet", flashCardSet);
+        return "flash-card-player";
     }
 }

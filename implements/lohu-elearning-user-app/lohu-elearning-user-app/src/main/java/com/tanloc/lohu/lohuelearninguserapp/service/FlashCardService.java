@@ -96,4 +96,12 @@ public class FlashCardService {
         }
         return flashCardRepository.save(flashCard);
     }
+
+    @PreAuthorize("authentication.principal.user.id == #userId")
+    public void delete(Long id, Long userId) {
+        FlashCard flashCard = flashCardRepository.findByIdAndFlashCardSet_User_Id(id, userId)
+                .orElseThrow(() -> new FlashCardNotFoundException("Không tồn tại flash card có mã là " + id + " của user " + userId));
+
+        flashCardRepository.delete(flashCard);
+    }
 }
