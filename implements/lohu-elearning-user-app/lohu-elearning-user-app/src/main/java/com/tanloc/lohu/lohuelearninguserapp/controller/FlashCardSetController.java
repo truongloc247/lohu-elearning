@@ -100,4 +100,20 @@ public class FlashCardSetController {
         model.addAttribute("flashCardSet", flashCardSet);
         return "flash-card-player";
     }
+
+    @GetMapping("/public")
+    public String showAllPublicFlashCardSet(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber, @RequestParam(value = "searchKey", required = false) String searchKey, Model model) {
+        Page<FlashCardSet> flashCardSets;
+        if (searchKey != null) {
+            flashCardSets = flashCardSetService.getPublicFlashCardSetsByNameContaining(searchKey, pageNumber, 4, "name");
+            model.addAttribute("searchKey", searchKey);
+        }
+        else {
+            flashCardSets = flashCardSetService.getAllPublicFlashCardSets(pageNumber, 4, "name");
+        }
+        model.addAttribute("flashCardSets", flashCardSets.getContent());
+        model.addAttribute("currentPage", flashCardSets.getNumber() + 1);
+        model.addAttribute("totalPages", flashCardSets.getTotalPages());
+        return "public-flash-card-sets";
+    }
 }

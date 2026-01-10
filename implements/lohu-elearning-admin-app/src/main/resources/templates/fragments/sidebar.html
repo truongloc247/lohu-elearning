@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Sidebar Toggle Inside</title>
+</head>
+<body>
+
+<div th:fragment="sidebar()" id="mySidebar" class="sidebar collapsed flex-shrink-0 p-3">
+
+    <div class="sidebar-header">
+        <a href="/" class="logo-container d-flex align-items-center link-dark text-decoration-none">
+            <span class="fs-4 ms-2 sidebar-text fw-bold">LOHU</span>
+        </a>
+
+        <button class="btn-toggle text-dark" onclick="toggleSidebar()">
+            <i class="bi bi-list fs-4"></i> </button>
+    </div>
+
+    <hr>
+
+    <ul class="nav nav-pills flex-column mb-auto gap-2">
+        <li class="nav-item">
+            <a th:href="@{/admin/bills}" class="nav-link active" aria-current="page">
+                <i class="bi bi-receipt"></i>
+                <span class="sidebar-text">Hóa đơn</span>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/monthlyRevenue}" class="nav-link link-dark">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span class="sidebar-text">Thống kê</span>
+            </a>
+        </li>
+    </ul>
+    <hr>
+
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle justify-content-center" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+            <img th:src="@{/default-images/flash_card_default_img.png}" alt="" width="32" height="32" class="rounded-circle">
+            <strong class="sidebar-text ms-2" sec:authentication="principal.username"></strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
+

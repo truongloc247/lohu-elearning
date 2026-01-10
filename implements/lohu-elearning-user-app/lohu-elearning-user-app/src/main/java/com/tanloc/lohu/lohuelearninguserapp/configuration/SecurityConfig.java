@@ -26,7 +26,6 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
             .exceptionHandling(exception -> exception

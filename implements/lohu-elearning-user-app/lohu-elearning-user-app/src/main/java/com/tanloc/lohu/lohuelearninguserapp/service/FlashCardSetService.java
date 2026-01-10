@@ -80,4 +80,18 @@ public class FlashCardSetService {
         Collections.shuffle(flashCardSet.getFlashCards());
         return flashCardSet;
     }
+
+    public Page<FlashCardSet> getAllPublicFlashCardSets(int pageNumber, int pageSize, String sortBy) {
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageSize < 1) pageSize = 4;
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.by(sortBy));
+        return flashCardSetRepository.findByIsPublicTrue(pageable);
+    }
+
+    public Page<FlashCardSet> getPublicFlashCardSetsByNameContaining(String searchKey, int pageNumber, int pageSize, String sortBy) {
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageSize < 1) pageSize = 4;
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.by(sortBy));
+        return flashCardSetRepository.findByIsPublicTrueAndNameContaining(searchKey, pageable);
+    }
 }

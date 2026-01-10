@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,31 +24,13 @@
             <li class="nav-item">
                 <a th:href="@{/user/flashCardSet/all}" class="nav-link active" aria-current="page">
                     <i class="bi bi-archive"></i>
-                    <span class="sidebar-text">Góc học tập</span>
+                    <span class="sidebar-text">Flash card</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark">
-                    <i class="bi bi-speedometer2"></i>
-                    <span class="sidebar-text">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">
-                    <i class="bi bi-table"></i>
-                    <span class="sidebar-text">Orders</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">
-                    <i class="bi bi-grid"></i>
-                    <span class="sidebar-text">Products</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">
-                    <i class="bi bi-person-circle"></i>
-                    <span class="sidebar-text">Customers</span>
+                <a th:href="@{/user/premium/about}" class="nav-link link-dark">
+                    <i class="bi bi-gem"></i>
+                    <span class="sidebar-text">Premium</span>
                 </a>
             </li>
         </ul>
@@ -56,15 +38,11 @@
 
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle justify-content-center" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="" alt="" width="32" height="32" class="rounded-circle">
-                <strong class="sidebar-text ms-2">mdo</strong>
+                <img th:src="@{/default-images/flash_card_default_img.png}" alt="" width="32" height="32" class="rounded-circle">
+                <strong class="sidebar-text ms-2" sec:authentication="principal.user.name"></strong>
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
             </ul>
         </div>
     </div>

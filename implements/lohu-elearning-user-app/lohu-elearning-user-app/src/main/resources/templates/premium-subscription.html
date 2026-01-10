@@ -6,44 +6,63 @@
     <title>Đăng ký PREMIUM - LOHU</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 
     <style>
         :root {
             --brand-purple: #6f42c1;
-            --brand-purple-light: #f3f0ff; /* Màu nền tím rất nhạt */
             --brand-purple-hover: #59359a;
+            --brand-purple-subtle: #f3f0ff;
+            --text-dark: #343a40;
+            --text-muted: #6c757d;
         }
 
-        /* Nền của vùng nội dung chính */
-        .content-wrapper {
-            background-color: #f8f9fa; /* Màu xám rất nhạt cho nền tổng thể */
-            background-image: radial-gradient(#e0cffc 1px, transparent 1px); /* Họa tiết chấm bi mờ (tùy chọn) */
-            background-size: 20px 20px;
-        }
-
-        /* Card thiết kế mới */
-        .card-premium-modern {
-            border: none;
-            border-radius: 20px;
-            background: #fff;
-            box-shadow: 0 15px 35px rgba(111, 66, 193, 0.15); /* Bóng đổ mềm mại màu tím */
+        /* 1. Cấu hình Scrollbar & Body */
+        html, body {
+            height: 100%;
             overflow: hidden;
-            position: relative;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        /* Dải màu trang trí trên đầu card */
+        /* Scrollbar tím */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #d0c2f0; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: var(--brand-purple); }
+
+        /* Background Pattern: Chấm bi tím nhạt */
+        .content-wrapper {
+            background-color: #f8f9fa;
+            background-image: radial-gradient(rgba(111, 66, 193, 0.15) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+
+        /* Card Premium Design */
+        .card-premium-modern {
+            border: 1px solid rgba(111, 66, 193, 0.1); /* Viền tím siêu mờ */
+            border-radius: 24px;
+            background: #ffffff;
+            box-shadow: 0 15px 40px rgba(111, 66, 193, 0.1); /* Bóng đổ tím nhẹ */
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-premium-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(111, 66, 193, 0.2);
+        }
+
+        /* Dải màu Gradient trên đầu card */
         .card-top-accent {
             height: 8px;
-            background: var(--brand-purple);
+            background: linear-gradient(90deg, #a575ed 0%, var(--brand-purple) 50%, #59359a 100%);
             width: 100%;
         }
 
-        .text-purple {
-            color: var(--brand-purple) !important;
-        }
+        .text-purple { color: var(--brand-purple) !important; }
 
+        /* Button Glow Effect */
         .btn-purple-glow {
             background-color: var(--brand-purple);
             color: white;
@@ -51,98 +70,137 @@
             padding: 12px 0;
             font-weight: 600;
             font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.4); /* Nút phát sáng nhẹ */
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+            transition: all 0.2s ease-in-out;
         }
 
         .btn-purple-glow:hover {
             background-color: var(--brand-purple-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.5);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(111, 66, 193, 0.4);
         }
 
-        /* Khung chứa danh sách tính năng */
+        .btn-purple-glow:active {
+            transform: translateY(0);
+        }
+
+        /* Feature Box */
         .feature-box {
-            background-color: var(--brand-purple-light);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
+            background-color: var(--brand-purple-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(111, 66, 193, 0.05);
         }
 
         .feature-item {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.95rem;
-            color: #555;
-        }
-
-        .feature-item:last-child {
-            margin-bottom: 0;
+            color: var(--text-dark);
+            font-weight: 500;
         }
 
         .feature-item i {
             font-size: 1.2rem;
-            flex-shrink: 0; /* Icon không bị co lại */
+            flex-shrink: 0;
+            color: var(--brand-purple); /* Icon màu tím */
+            margin-right: 12px;
+        }
+
+        /* User Info Box */
+        .user-info-box {
+            background: #fff;
+            padding: 24px 24px 10px 24px;
+        }
+
+        /* Avatar Container */
+        .avatar-circle {
+            width: 70px;
+            height: 70px;
+            background-color: var(--brand-purple-subtle);
+            color: var(--brand-purple);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .price-tag {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--brand-purple);
+            line-height: 1;
+            letter-spacing: -1px;
         }
     </style>
 </head>
 <body>
 
-<div class="d-flex">
+<div class="d-flex vh-100">
 
     <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
 
-    <div class="content-wrapper flex-grow-1 d-flex align-items-center justify-content-center p-4 min-vh-100">
+    <div class="content-wrapper flex-grow-1 h-100 overflow-y-auto custom-scroll d-flex align-items-center justify-content-center p-4">
 
-        <div class="container" style="max-width: 500px;"> <div class="card card-premium-modern">
-            <div class="card-top-accent"></div>
+        <div class="container" style="max-width: 480px;">
+            <div class="card card-premium-modern">
+                <div class="card-top-accent"></div>
 
-            <div th:object="${user}">
-                <div th:text="*{name}"></div>
-                <div th:text="*{email}"></div>
-                <div th:text="*{vipExpirationDate} == null ? 'Chưa kích hoạt' : 'Hạn sử dụng PREMIUM: ' + *{vipExpirationDate}"></div>
-            </div>
+                <div class="user-info-box text-center" th:object="${user}">
+                    <div class="avatar-circle shadow-sm">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
 
-            <div class="card-body p-4 p-md-5 text-center">
+                    <h5 class="fw-bold mb-1 text-dark" th:text="*{name}">User Name</h5>
+                    <p class="text-muted small mb-2" th:text="*{email}">email@example.com</p>
 
-                <div class="mb-2">
-                        <span class="badge bg-warning text-dark rounded-pill mb-3 px-3 py-2">
-                            <i class="bi bi-star-fill me-1"></i> Phổ biến nhất
+                    <div class="badge rounded-pill px-3 py-2 mt-1"
+                         th:classappend="*{vipExpirationDate} == null ? 'bg-secondary bg-opacity-75' : 'bg-success bg-gradient'">
+                        <i class="bi bi-stars me-1"></i>
+                        <span th:text="*{vipExpirationDate} == null ? 'Tài khoản thường' : 'Hạn Premium: ' + *{vipExpirationDate}"></span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 pt-2 text-center">
+                    <hr class="text-muted opacity-25 mx-4 mb-4">
+
+                    <div class="mb-2">
+                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2 shadow-sm border border-white">
+                            <i class="bi bi-lightning-fill me-1"></i> Phổ biến nhất
                         </span>
-                </div>
-
-                <h2 class="fw-bold mb-1 text-dark">LOHU Premium</h2>
-                <p class="text-muted small">Mở khóa sức mạnh AI cho việc học</p>
-
-                <div class="my-4">
-                    <div class="d-flex justify-content-center align-items-end text-purple">
-                        <span class="display-3 fw-bold lh-1" th:text="${@environment.getProperty('lohu.premium.price')}"></span>
-                        <span class="h3 mb-2 me-1">₫</span>
                     </div>
-                    <span class="text-muted small">/ tháng</span>
-                </div>
 
-                <div class="feature-box text-start text-dark">
-                    <div class="feature-item">
-                        <i class="bi bi-check-circle-fill text-purple me-3"></i>
-                        <span>Tạo hàng loạt Flash card với prompt chỉ trong một nốt nhạc</span>
+                    <h3 class="fw-bold mb-1 text-purple">LOHU Premium</h3>
+                    <p class="text-muted small mb-4">Nâng cấp để học tập hiệu quả hơn gấp 10 lần</p>
+
+                    <div class="my-4 d-flex justify-content-center align-items-end">
+                        <span class="h3 mb-2 me-1 text-muted fw-bold">₫</span>
+                        <span class="price-tag" th:text="${@environment.getProperty('lohu.premium.price')}"></span>
+                        <span class="text-muted fw-medium fs-6 ms-1 mb-2">/ tháng</span>
                     </div>
-                </div>
 
-                <div class="mt-4">
-                    <a th:href="@{/user/premium/pay}" class="btn btn-purple-glow w-100 rounded-pill">
-                        Đăng ký/Gia hạn ngay
-                    </a>
-                    <div class="mt-3 text-muted" style="font-size: 0.8rem;">
-                        <i class="bi bi-shield-lock"></i> Thanh toán an toàn 100%
+                    <div class="feature-box text-start">
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Tạo Flashcard tự động bằng AI</span>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="mt-4">
+                        <a th:href="@{/user/premium/pay}" class="btn btn-purple-glow w-100 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-gem"></i> Đăng ký / Gia hạn ngay
+                        </a>
+                        <div class="mt-3 text-muted d-flex align-items-center justify-content-center gap-2" style="font-size: 0.8rem;">
+                            <i class="bi bi-shield-lock-fill text-success"></i> Thanh toán an toàn 100%
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-
         </div>
     </div>
 </div>

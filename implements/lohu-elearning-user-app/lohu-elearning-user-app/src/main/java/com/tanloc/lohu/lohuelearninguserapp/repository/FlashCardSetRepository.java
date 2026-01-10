@@ -17,4 +17,8 @@ public interface FlashCardSetRepository extends JpaRepository<FlashCardSet, Long
     Optional<FlashCardSet> findByIdAndUserId(Long id, Long userId);
 
     long deleteByIdAndUserId(Long id, Long userId);
+
+    Page<FlashCardSet> findByIsPublicTrue(Pageable pageable);
+
+    Page<FlashCardSet> findByIsPublicTrueAndNameContaining(String name, Pageable pageable);
 }

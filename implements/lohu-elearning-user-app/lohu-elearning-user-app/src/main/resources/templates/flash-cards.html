@@ -17,7 +17,12 @@
             --brand-purple-rgb: 111, 66, 193;
         }
 
-        body { background-color: #f8f9fa; }
+        /* 1. Cố định chiều cao trang web, ngăn cuộn body */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
 
         .text-purple { color: var(--brand-purple) !important; }
         .btn-purple { background-color: var(--brand-purple); color: white; border: none; }
@@ -64,14 +69,30 @@
             object-fit: cover;
             min-height: 140px;
         }
+
+        /* 2. Tùy chỉnh thanh cuộn (Scrollbar) */
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #bca2eb;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-purple);
+        }
     </style>
 </head>
 <body>
-<div class="d-flex min-vh-100">
+<div class="d-flex vh-100">
     <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
 
-    <div class="flex-grow-1 p-4">
-        <div class="container-fluid" style="max-width: 1100px;">
+    <div class="flex-grow-1 h-100 overflow-y-auto custom-scroll">
+        <div class="container-fluid p-4" style="max-width: 1200px;">
 
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-body p-4" th:object="${flashCardSet}">
@@ -82,7 +103,7 @@
                         </div>
                         <span class="badge rounded-pill px-3 py-2 badge-subtle-purple"
                               th:text="*{isPublic} ? 'Riêng tư' : 'Công khai'">
-                            </span>
+                        </span>
                     </div>
                     <div class="text-secondary small d-flex align-items-center gap-2">
                         <i class="bi bi-clock-history"></i>
@@ -92,29 +113,28 @@
                 </div>
             </div>
 
-            <div class="row g-3 mb-4 align-items-center justify-content-between">
-                <div class="col-auto">
-                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
-                       th:href="@{/user/flashCardSet/all}">
-                        <i class="bi bi-backspace"></i> Quay lại
+            <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3 mb-4">
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-purple shadow-sm fw-medium" th:href="@{/user/flashCardSet/all}">
+                        <i class="bi bi-arrow-left"></i> Quay lại
                     </a>
-                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
-                       th:href="@{/user/flashCardSet/{id}/flashCard/create(id=${flashCardSet.id})}">
-                        <i class="bi bi-plus-lg me-1"></i> Thêm thẻ mới
+                    <a class="btn btn-purple shadow-sm fw-medium" th:href="@{/user/flashCardSet/{id}/flashCard/create(id=${flashCardSet.id})}">
+                        <i class="bi bi-plus-lg"></i> Thêm thẻ
                     </a>
-                    <a class="btn btn-purple shadow-sm px-4 fw-medium"
-                       th:href="@{/user/flashCardSet/play/{id}(id=${flashCardSet.id})}">
+                    <a class="btn btn-purple shadow-sm fw-medium" th:href="@{/user/flashCardSet/play/{id}(id=${flashCardSet.id})}">
                         <i class="bi bi-play-circle"></i> Học ngay
                     </a>
-                    <a class="btn btn-purple shadow-sm px-4 fw-medium" style="color: yellow"
+                    <a class="btn btn-purple shadow-sm fw-medium" style="color: #fffebb"
                        th:href="@{/user/flashCardSet/{flashCardSetId}/flashCard/AIgenerate(flashCardSetId=${flashCardSet.id})}">
-                        <i class="bi bi-lightning-charge"></i> AI GENERATE
+                        <i class="bi bi-stars"></i> AI Generate
                     </a>
                 </div>
-                <div class="col-12 col-md-5">
+
+                <div class="" style="min-width: 300px;">
                     <form class="input-group shadow-sm" th:action="@{/user/flashCardSet/{id}(id=${flashCardSet.id})}">
                         <input type="text" class="form-control border-end-0" name="searchKey"
-                               placeholder="Tìm kiếm..." th:value="${searchKey}">
+                               placeholder="Tìm kiếm thẻ..." th:value="${searchKey}">
                         <button type="submit" class="btn bg-white border border-start-0 text-purple">
                             <i class="bi bi-search"></i>
                         </button>
@@ -122,7 +142,7 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-3 pb-4">
                 <div class="card shadow-sm border-0 card-hover overflow-hidden"
                      th:each="flashCard : ${flashCards}" th:object="${flashCard}">
                     <div class="row g-0 align-items-stretch h-100">
@@ -170,9 +190,9 @@
                 </div>
             </div>
 
-            <div th:if="${totalPages > 0}" class="mt-4">
+            <div th:if="${totalPages > 0}" class="mb-4">
                 <nav>
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination justify-content-center flex-wrap">
                         <li th:each="i : ${#numbers.sequence(1, totalPages)}"
                             th:class="'page-item' + ${currentPage == i ? ' active' : ''}">
                             <a class="page-link shadow-none"

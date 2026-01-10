@@ -1,39 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cập nhật thư mục học tập</title>
+    <title>Cập nhật bộ flash card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+
+    <style>
+        :root {
+            --primary-color: #6f42c1;
+            --primary-hover: #59359a;
+            --primary-light: #f3f0ff;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+            background-color: var(--primary-hover) !important;
+            border-color: var(--primary-hover) !important;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #bca2eb;
+            box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .text-purple {
+            color: var(--primary-color) !important;
+        }
+
+        .form-control[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+            cursor: not-allowed;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #bca2eb;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
 </head>
 <body>
-    <div class="d-flex">
-        <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
-        <div class="container">
-            <form th:action="@{/user/flashCardSet/doEdit}" th:method="post" th:object="${flashCardSetEditRequest}">
-                <div>
-                    <label>Mã thư mục:</label>
-                    <input th:field="*{id}" type="text" class="form-control" readonly="readonly">
+<div class="d-flex vh-100">
+    <div th:replace="~{fragments/sidebar :: sidebar()}"></div>
+
+    <div class="flex-grow-1 h-100 overflow-y-auto custom-scroll">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+
+                    <div class="card border-0 shadow rounded-4 bg-white">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <i class="bi bi-pencil-square display-4 text-purple"></i>
+                                <h2 class="fw-bold text-purple mt-2">Cập nhật thông tin</h2>
+                                <p class="text-muted">Chỉnh sửa thư mục học tập của bạn</p>
+                            </div>
+
+                            <form th:action="@{/user/flashCardSet/doEdit}" th:method="post" th:object="${flashCardSetEditRequest}">
+
+                                <div class="mb-4">
+                                    <label class="form-label">Mã thư mục</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-hash"></i></span>
+                                        <input th:field="*{id}" type="text" class="form-control form-control-lg" readonly="readonly">
+                                    </div>
+                                    <div class="form-text">Mã định danh không thể thay đổi.</div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" th:for="name">Tên thư mục <span class="text-danger">*</span></label>
+                                    <input class="form-control form-control-lg" th:field="*{name}" type="text">
+                                    <span class="text-danger small mt-1 d-block" th:errors="*{name}"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" th:for="description">Mô tả</label>
+                                    <input class="form-control form-control-lg" th:field="*{description}" type="text">
+                                    <span class="text-danger small mt-1 d-block" th:errors="*{description}"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" th:for="isPublic">Trạng thái hiển thị</label>
+                                    <select class="form-select form-select-lg" th:field="*{isPublic}">
+                                        <option value="false">🔒 Riêng tư</option>
+                                        <option value="true">🌐 Công khai</option>
+                                    </select>
+                                    <span class="text-danger small mt-1 d-block" th:errors="*{isPublic}"></span>
+                                </div>
+
+                                <div class="d-grid mt-5">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold">
+                                        <i class="bi bi-check-circle me-2"></i>Lưu thay đổi
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <a href="javascript:history.back()" class="text-decoration-none text-secondary">
+                                        <i class="bi bi-arrow-left"></i> Hủy bỏ
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label th:for="name">Tên thư mục:</label>
-                    <input th:field="*{name}" type="text">
-                    <span th:errors="*{name}"></span>
-                </div>
-                <div>
-                    <label th:for="description">Mô tả:</label>
-                    <input th:field="*{description}" type="text">
-                    <span th:errors="*{description}"></span>
-                </div>
-                <div>
-                    <label th:for="isPublic">Công khai:</label>
-                    <select th:field="*{isPublic}">
-                        <option value="false">Riêng tư</option>
-                        <option value="true">Công khai</option>
-                    </select>
-                    <span th:errors="*{isPublic}"></span>
-                </div>
-                <button type="submit">Xác nhận</button>
-            </form>
+            </div>
         </div>
     </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
